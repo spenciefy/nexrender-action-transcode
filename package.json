@@ -1,0 +1,21 @@
+{
+    "name": "nexrender-action-transcode",
+    "version": "1.0.0",
+    "description": "Transcode videos to mp4 format with ffmpeg in prerender",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "spenciefy",
+    "license": "ISC",
+    "ffmpeg-static": {
+        "version": "b4.2.2",
+        "url": "https://github.com/eugeneware/ffmpeg-static",
+        "_": "This is built-in ffmpeg-static dynamic dependency, visit url for more info."
+    },
+    "dependencies": {
+        "fs": "0.0.1-security",
+        "node-fetch": "^2.6.1",
+        "node-fetch-progress": "^1.0.2"
+    }
+}
