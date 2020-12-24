@@ -78,8 +78,8 @@ const constructParams = (job, settings, { input, output, params }) => {
         return path.join(job.workpath, i)
     })
 
-    settings.logger.log(`[${job.uid}] action-encode: input file ${inputs[0]}`)
-    settings.logger.log(`[${job.uid}] action-encode: output file ${output}`)
+    settings.logger.log(`[${job.uid}] action-transcode: input file ${inputs[0]}`)
+    settings.logger.log(`[${job.uid}] action-transcode: output file ${output}`)
 
     const baseParams = {
         '-i': inputs,
@@ -127,7 +127,7 @@ const getDuration = (regex, data) => {
 
 const transcodeVideo = (job, settings, input) => {
     return new Promise((resolve, reject) => {
-        let output = input.slice(0, -4) + '-encoded.mp4'
+        let output = input.slice(0, -4) + '-transcoded.mp4'
 
         settings.logger.log(`[${job.uid}] transcoding asset: ${input}`)
 
@@ -155,7 +155,7 @@ const transcodeVideo = (job, settings, input) => {
                     if (totalDuration > 0 && currentProgress > 0) {
                         const currentPercentage = Math.ceil((currentProgress / totalDuration) * 100)
 
-                        settings.logger.log(`[${job.uid}] [${output}] encoding progress ${currentPercentage}%...`)
+                        settings.logger.log(`[${job.uid}] [${output}] transcoding progress ${currentPercentage}%...`)
                     }
                 })
 
@@ -164,7 +164,7 @@ const transcodeVideo = (job, settings, input) => {
                 /* on finish (code 0 - success, other - error) */
                 instance.on('close', (code) => {
                     if (code !== 0) {
-                        return reject(new Error('Error in action-encode module (ffmpeg) code : ' + code))
+                        return reject(new Error('Error in action-transcode module (ffmpeg) code : ' + code))
                     }
 
                     settings.logger.log(`[${job.uid}] Completed transcoding, new asset ${output}`)
@@ -172,13 +172,13 @@ const transcodeVideo = (job, settings, input) => {
                 })
             })
             .catch((e) => {
-                return reject(new Error('Error in action-encode module (ffmpeg) ' + e))
+                return reject(new Error('Error in action-transcode module (ffmpeg) ' + e))
             })
     })
 }
 
 module.exports = async (job, settings, options, type) => {
-    settings.logger.log(`[${job.uid}] starting action-encode action (ffmpeg)`)
+    settings.logger.log(`[${job.uid}] starting action-transcode action (ffmpeg)`)
     var promises = []
     return new Promise(async (resolve, reject) => {
         for (asset of job.assets) {
@@ -190,8 +190,8 @@ module.exports = async (job, settings, options, type) => {
             }
         }
 
-        settings.logger.log(`[${job.uid}] Completed transcoding:`)
-        settings.logger.log(job)
+        settings.logger.log(`[${job.uid}] completed transcoding all videos`)
+
         resolve(job)
     })
 }
